@@ -34,7 +34,7 @@ fun OnboardingScreen(
                 val themes = listOf(
                     stringResource(id = R.string.system_theme),
                     stringResource(id = R.string.light_theme),
-                    stringResource(id = R.string.dark_theme)
+                    stringResource(id = R.string.dark_theme),
                 )
 
                 themes.forEach { theme ->
@@ -48,7 +48,7 @@ fun OnboardingScreen(
                     ) {
                         RadioButton(
                             selected = selectedTheme == theme,
-                            onClick = { selectedTheme = theme }
+                            onClick = { selectedTheme = theme },
                         )
                         Text(text = theme, modifier = Modifier.padding(start = 4.dp))
                     }
