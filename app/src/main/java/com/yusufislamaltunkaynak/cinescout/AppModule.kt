@@ -14,7 +14,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    // Context parametresine @ApplicationContext anotasyonu eklendi
+
     fun providePreferencesManager(@ApplicationContext context: Context): PreferencesManager =
         PreferencesManager(context)
 }
