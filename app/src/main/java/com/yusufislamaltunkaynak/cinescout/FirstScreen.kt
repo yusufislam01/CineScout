@@ -41,7 +41,6 @@ fun onNext() {
     TODO("Not yet implemented")
 }
 
-
 @Composable
 fun FirstScreenPreview() {
     FirstScreen()
