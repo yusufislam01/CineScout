@@ -1,5 +1,6 @@
 package com.yusufislamaltunkaynak.cinescout
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,27 +12,37 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-
-    // Flow → Compose State dönüşümü için
     val isCompleted by onboardingViewModel.isOnboardingCompleted.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "first" // Başlangıç ekranı
     ) {
+        composable("first") {
+            FirstScreen(
+                onNext = {
+                    navController.navigate("onboarding") {
+                        popUpTo("first") { inclusive = true }
+                    }
+                }, autoNavigate = true
+            )
+        }
+
         composable("onboarding") {
             OnboardingScreen(
+                viewModel = onboardingViewModel,
                 onFinish = {
-                    // Başla butonuna basınca home ekranına git
                     navController.navigate("home") {
-                        popUpTo("onboarding") { inclusive = true }
+                        popUpTo("onboarding") { inclusive = false }
                     }
                 }
             )
         }
 
         composable("home") {
-            FirstScreen()
+            HomeScreen(onNext = {
+                }
+             )
         }
     }
 }

@@ -18,6 +18,12 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField ("String", "TMDB_API_KEY", "\"8d076f84526c06844eef00e4b673b74e\"")
+
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
     buildFeatures {
@@ -85,4 +91,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.google.code.gson:gson:2.13.1")
 }

@@ -24,7 +24,7 @@ fun OnboardingScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         Column {
             Text(
@@ -69,9 +69,9 @@ fun OnboardingScreen(
                 onFinish()
             }
         ) {
-            Text(text = stringResource(id = R.string.start_button),
+            Text(
+                text = stringResource(id = R.string.start_button),
                 fontWeight = FontWeight.ExtraBold,
-
             )
         }
     }
