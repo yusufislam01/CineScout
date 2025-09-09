@@ -19,7 +19,7 @@ import kotlinx.coroutines.delay
 fun FirstScreen(onNext: () -> Unit, autoNavigate: Boolean = false) {
     if (autoNavigate) {
         LaunchedEffect(Unit) {
-            delay(1900)
+            delay(2200L)
             onNext()
         }
     }
