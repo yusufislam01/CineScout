@@ -15,21 +15,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
+private const val SPLASH_DELAY = 2200L
 @Composable
-fun FirstScreen(onNext: () -> Unit, autoNavigate: Boolean = false) {
+fun FirstScreen(onNext: () -> Unit, autoNavigate: Boolean = false,) {
     if (autoNavigate) {
         LaunchedEffect(Unit) {
-            delay(2200L)
+            delay(SPLASH_DELAY)
             onNext()
         }
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { onNext() } // Ekrana basınca diğer ekrana geç
+            .clickable { onNext() }
             .background(Color.Black.copy(alpha = 0.5f)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Cine Scout",

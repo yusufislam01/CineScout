@@ -21,7 +21,7 @@ fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
 
     NavHost(
         navController = navController,
-        startDestination = "first" // Başlangıç ekranı
+        startDestination = "first",
     ) {
         composable("first") {
             FirstScreen(
@@ -29,7 +29,8 @@ fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
                     navController.navigate("onboarding") {
                         popUpTo("first") { inclusive = true }
                     }
-                }, autoNavigate = true
+                },
+                autoNavigate = true,
             )
         }
 
@@ -45,12 +46,8 @@ fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
         }
 
         composable("home") {
-
-
+    
             }
-
-
-
         }
 
 }
