@@ -1,4 +1,4 @@
-package com.yusufislamaltunkaynak.cinescout
+package com.yusufislamaltunkaynak.cinescout.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
-private const val SPLASH_DELAY = 2200L
+private const val SPLASH_DELAY = 2800L
 @Composable
 fun FirstScreen(onNext: () -> Unit, autoNavigate: Boolean = false,) {
     if (autoNavigate) {

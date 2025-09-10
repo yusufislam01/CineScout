@@ -1,6 +1,5 @@
-package com.yusufislamaltunkaynak.cinescout
+package com.yusufislamaltunkaynak.cinescout.screens
 
-import android.R.attr.enabled
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yusufislamaltunkaynak.cinescout.R
 import com.yusufislamaltunkaynak.cinescout.viewmodel.OnboardingViewModel
 
 @Composable
@@ -87,8 +87,8 @@ fun OnboardingScreen(
         Button(
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (selectedTheme != null) Color.Yellow else Color.Gray,
-                contentColor = Color.Black
+                containerColor = if (selectedTheme != null) Color.Black else Color.Gray,
+                contentColor = Color.White
             ),
             enabled = selectedTheme != null,
             onClick = {
