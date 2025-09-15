@@ -5,48 +5,49 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yusufislamaltunkaynak.cinescout.model.Movies
 import com.yusufislamaltunkaynak.cinescout.viewmodel.MovieViewModel
+import com.yusufislamaltunkaynak.cinescout.viewmodel.MoviesUiState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
+
 
 @Composable
 fun HomeScreen(
     viewModel: MovieViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
 ) {
-    val movies by viewModel.movies.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        when {
-            isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            error != null -> Text(
-                text = "Hata: $error",
+        when (uiState) {
+            is MoviesUiState.Loading -> CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            is MoviesUiState.Error -> Text(
+                text = "Hata: ${(uiState as MoviesUiState.Error).message}",
                 color = Color.Red,
                 modifier = Modifier.align(Alignment.Center)
             )
-            movies.isNotEmpty() -> MovieList(
-                movieList = movies,
-                onMovieClick = onMovieClick,
-                loadNextPage = { viewModel.loadNextPage() } // bu satır çok önemli
-            )
-            else -> Text(
-                text = "Film bulunamadı",
-                modifier = Modifier.align(Alignment.Center)
-            )
 
+            is MoviesUiState.Success -> MovieList(
+                movieList = (uiState as MoviesUiState.Success).movies,
+                onMovieClick = onMovieClick,
+                loadNextPage = { viewModel.loadNextPage() }
+            )
         }
     }
 }
@@ -57,26 +58,32 @@ fun MovieList(
     onMovieClick: (Int) -> Unit,
     loadNextPage: () -> Unit
 ) {
+    val listState = rememberLazyListState()
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        }.collect { lastVisibleIndex ->
+            if (lastVisibleIndex != null && lastVisibleIndex >= movieList.lastIndex) {
+                loadNextPage()
+            }
+        }
+    }
+
     LazyColumn(
+        state = listState,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .padding(8.dp)
     ) {
-        itemsIndexed(movieList) { index, movie ->
+        itemsIndexed(movieList, key = { _, movie -> movie.id }) { _, movie ->
             MovieRow(
                 movie = movie,
                 onClick = { onMovieClick(movie.id) }
             )
-
-            // Son item’a gelindiğinde yeni sayfa yükle
-            if (index == movieList.lastIndex) {
-                loadNextPage()
-            }
         }
     }
 }
-
 
 @Composable
 fun MovieRow(
