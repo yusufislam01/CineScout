@@ -18,6 +18,12 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField ("String", "TMDB_API_KEY", "\"8d076f84526c06844eef00e4b673b74e\"")
+
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
     buildFeatures {
@@ -67,6 +73,7 @@ dependencies {
 
     // Room
     implementation("androidx.room:room-runtime:2.7.2")
+    implementation(libs.androidx.camera.core)
     ksp("androidx.room:room-compiler:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
 
@@ -84,4 +91,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    val retrofitVersion = "3.0.0"
+    implementation("com.google.code.gson:gson:2.13.1")
+    implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+
 }

@@ -23,7 +23,7 @@ Ayarlar: DataStore (Preferences)
 Görseller: Coil
 Test: JUnit5/4, MockK, Turbine, AndroidX Test, Compose UI Test
 
-API: The Movie Database API
+API: The Movie Database API: https://developer.themoviedb.org/docs/getting-started
 
 
 

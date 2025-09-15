@@ -1,28 +1,48 @@
 package com.yusufislamaltunkaynak.cinescout
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yusufislamaltunkaynak.cinescout.screens.FirstScreen
+import com.yusufislamaltunkaynak.cinescout.screens.HomeScreen
+import com.yusufislamaltunkaynak.cinescout.screens.OnboardingScreen
+import com.yusufislamaltunkaynak.cinescout.ui.home.MovieDetailScreen
+import com.yusufislamaltunkaynak.cinescout.viewmodel.MovieViewModel
+import com.yusufislamaltunkaynak.cinescout.viewmodel.OnboardingViewModel
 
 @Composable
-fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
+fun AppNavigation(
+    onboardingViewModel: OnboardingViewModel = hiltViewModel(),
+    movieViewModel: MovieViewModel = hiltViewModel() // Home için ViewModel
+) {
     val navController = rememberNavController()
-
-    // Flow → Compose State dönüşümü için
-    val isCompleted by onboardingViewModel.isOnboardingCompleted.collectAsState(initial = false)
+    val isCompleted by onboardingViewModel.isOnboardingCompleted.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
-        startDestination = if (isCompleted) "home" else "onboarding"
+       // startDestination = if (isCompleted) "home" else "first"
+        startDestination = "first"
     ) {
+        composable("first") {
+            FirstScreen(
+                onNext = {
+                    navController.navigate("onboarding") {
+                        popUpTo("first") { inclusive = true }
+                    }
+                },
+                autoNavigate = true,
+            )
+        }
+
         composable("onboarding") {
             OnboardingScreen(
+                viewModel = onboardingViewModel,
                 onFinish = {
-                    // Başla butonuna basınca home ekranına git
                     navController.navigate("home") {
                         popUpTo("onboarding") { inclusive = true }
                     }
@@ -31,8 +51,21 @@ fun AppNavigation(onboardingViewModel: OnboardingViewModel = hiltViewModel()) {
         }
 
         composable("home") {
-            // HomeScreen placeholder, ileride implement edeceğiz
-            /* HomeScreen() */
+            HomeScreen(
+                viewModel = movieViewModel,
+                onMovieClick = { movieId ->
+                    navController.navigate("detail/$movieId")
+                }
+            )
+        }
+
+        composable("detail/{movieId}") { backStackEntry ->
+            val movieId = backStackEntry.arguments?.getString("movieId")?.toIntOrNull()
+            if (movieId != null) {
+                MovieDetailScreen(movieId = movieId)
+            } else {
+                Text("Film ID bulunamadı")
+            }
         }
     }
 }
