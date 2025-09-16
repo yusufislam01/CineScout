@@ -28,10 +28,9 @@ fun MovieDetailScreen(movieId: Int, voteAverage: Double, title: String?) {
             text = title ?: "Başlık Yok",
             color = Color.Black,
             fontSize = 28.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
-
 
         Text(
             text = "Movie ID: $movieId",

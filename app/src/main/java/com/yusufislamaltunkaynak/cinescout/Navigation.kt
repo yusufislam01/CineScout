@@ -70,7 +70,5 @@ fun AppNavigation(
                 Text("Film bilgisi alınamadı")
             }
         }
-
-
     }
 }
