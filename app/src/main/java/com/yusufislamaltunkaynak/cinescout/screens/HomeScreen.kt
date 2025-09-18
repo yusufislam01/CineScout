@@ -22,12 +22,16 @@ import com.yusufislamaltunkaynak.cinescout.viewmodel.MoviesUiState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 
 @Composable
 fun HomeScreen(
     viewModel: MovieViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit,
+    onMovieClick: (Movies) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -55,7 +59,7 @@ fun HomeScreen(
 @Composable
 fun MovieList(
     movieList: List<Movies>,
-    onMovieClick: (Int) -> Unit,
+    onMovieClick: (Movies) -> Unit,
     loadNextPage: () -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -79,7 +83,7 @@ fun MovieList(
         itemsIndexed(movieList, key = { _, movie -> movie.id }) { _, movie ->
             MovieRow(
                 movie = movie,
-                onClick = { onMovieClick(movie.id) }
+                onClick = { onMovieClick(movie) }
             )
         }
     }
@@ -99,18 +103,22 @@ fun MovieRow(
     ) {
         Text(
             text = movie.original_title,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.ExtraBold,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Dil: ${movie.original_language}",
-            style = MaterialTheme.typography.bodyMedium
+            text = "IMDB: ${String.format("%.1f", movie.vote_average)}/10",
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = movie.overview,
             style = MaterialTheme.typography.bodySmall,
-            maxLines = 2
+            maxLines = 3,
+            fontSize = 16.sp,
+
         )
     }
 }

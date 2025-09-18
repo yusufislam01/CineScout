@@ -66,6 +66,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
 
     // Retrofit + Gson
     implementation("com.squareup.retrofit2:retrofit:3.0.0")

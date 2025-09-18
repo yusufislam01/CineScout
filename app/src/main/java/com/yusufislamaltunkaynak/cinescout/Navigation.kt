@@ -18,14 +18,14 @@ import com.yusufislamaltunkaynak.cinescout.viewmodel.OnboardingViewModel
 @Composable
 fun AppNavigation(
     onboardingViewModel: OnboardingViewModel = hiltViewModel(),
-    movieViewModel: MovieViewModel = hiltViewModel() // Home için ViewModel
+    movieViewModel: MovieViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     val isCompleted by onboardingViewModel.isOnboardingCompleted.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
-       // startDestination = if (isCompleted) "home" else "first"
+
         startDestination = "first"
     ) {
         composable("first") {
@@ -53,18 +53,21 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(
                 viewModel = movieViewModel,
-                onMovieClick = { movieId ->
-                    navController.navigate("detail/$movieId")
+                onMovieClick = { movie ->
+                    navController.navigate("detail/${movie.id}/${movie.vote_average}/${movie.title}")
                 }
             )
         }
 
-        composable("detail/{movieId}") { backStackEntry ->
+        composable("detail/{movieId}/{voteAverage}/{title}") { backStackEntry ->
             val movieId = backStackEntry.arguments?.getString("movieId")?.toIntOrNull()
-            if (movieId != null) {
-                MovieDetailScreen(movieId = movieId)
+            val voteAverage = backStackEntry.arguments?.getString("voteAverage")?.toDoubleOrNull()
+            val title = backStackEntry.arguments?.getString("title") ?: "Başlık Yok"
+
+            if (movieId != null && voteAverage != null) {
+                MovieDetailScreen(movieId = movieId, voteAverage = voteAverage, title = title)
             } else {
-                Text("Film ID bulunamadı")
+                Text("Film bilgisi alınamadı")
             }
         }
     }
